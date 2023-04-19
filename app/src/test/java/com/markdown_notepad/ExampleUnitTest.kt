@@ -1,4 +1,4 @@
-package com.example.markdown_notepad
+package com.markdown_notepad
 
 import org.junit.Test
 
