@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">markdown_notepad</string>
+
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
+
+    <string name="edit_activity_title">EditActivity</string>
+    <string name="edit_activity_text">EDIT ACTIVITY</string>
+
+    <string name="file_manager_activity_title">FileManagerActivity</string>
+    <string name="file_manager_activity_text">FILE MANAGER ACTIVITY</string>
+
+    <string name="main_activity_text">MAIN ACTIVITY</string>
+
+    <string name="notes_list_activity_title">NotesListActivity</string>
+    <string name="notes_list_activity_text">NOTES LIST ACTIVITY</string>
+
+    <string name="settings_activity_title">SettingsActivity</string>
+    <string name="settings_activity_text">SETTINGS ACTIVITY</string>
+
+    <string name="view_as_markdown_activity_title">ViewAsMarkdownActivity</string>
+    <string name="view_as_markdown_activity_text">VIEW AS MARKDOWN ACTIVITY</string>
 </resources>

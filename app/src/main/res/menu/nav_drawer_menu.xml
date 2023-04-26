@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/notesListActivity"
+        android:title="@string/notes_list_activity_title"/>
+
+    <item android:id="@+id/editActivity"
+        android:title="@string/edit_activity_title"/>
+
+    <item android:id="@+id/fileManagerActivity"
+        android:title="@string/file_manager_activity_title"/>
+
+    <item android:id="@+id/viewAsMarkdownActivity"
+        android:title="@string/view_as_markdown_activity_title"/>
+
+    <item android:id="@+id/settingsActivity"
+        android:title="@string/settings_activity_title"/>
+
+</menu>
