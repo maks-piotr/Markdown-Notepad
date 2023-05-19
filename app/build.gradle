@@ -43,4 +43,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
+    //better fragment management
+    implementation "androidx.fragment:fragment-ktx:1.5.7"
+    //markdown library
+    implementation "io.noties.markwon:core:${markwonVersion}"
+    implementation "io.noties.markwon:editor:${markwonVersion}"
+    implementation "io.noties.markwon:ext-latex:${markwonVersion}"
 }

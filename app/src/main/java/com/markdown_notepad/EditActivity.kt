@@ -7,10 +7,16 @@ import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.commit
 import com.example.markdown_notepad.R
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.switchmaterial.SwitchMaterial
+import com.markdown_notepad.edit_activity_fragments.ReadMarkdownFragment
+import com.markdown_notepad.edit_activity_fragments.WriteMarkdownFragment
 
 class EditActivity : AppCompatActivity() {
+    private lateinit var fragmentSwitch : SwitchMaterial
+    /*menu*/
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
@@ -19,7 +25,7 @@ class EditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
-
+        /* menu */
         drawerLayout = findViewById(R.id.drawerLayout)
         navView = findViewById(R.id.navView)
 
@@ -41,6 +47,21 @@ class EditActivity : AppCompatActivity() {
             resultLauncher.launch(intent)
             true
         }
+        /*! menu*/
+        fragmentSwitch = findViewById(R.id.toggleEditModeSwitch)
+        fragmentSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                supportFragmentManager.commit {
+                    replace(R.id.fragmentContainer, WriteMarkdownFragment(), WRITE_FRAGMENT)
+                    setReorderingAllowed(true)
+                }
+            } else {
+                supportFragmentManager.commit {
+                    replace(R.id.fragmentContainer, ReadMarkdownFragment(), READ_FRAGMENT)
+                    setReorderingAllowed(true)
+                }
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -48,5 +69,10 @@ class EditActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+    /*!menu*/
+    companion object {
+        private const val READ_FRAGMENT = "readFragment"
+        private const val WRITE_FRAGMENT = "writeFragment"
     }
 }
