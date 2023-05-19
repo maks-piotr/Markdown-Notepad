@@ -72,7 +72,7 @@ class EditActivity : AppCompatActivity() {
     }
     /*!menu*/
     companion object {
-        const val READ_FRAGMENT = "readFragment"
-        const val WRITE_FRAGMENT = "writeFragment"
+        private const val READ_FRAGMENT = "readFragment"
+        private const val WRITE_FRAGMENT = "writeFragment"
     }
 }

@@ -47,4 +47,6 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:1.5.7"
     //markdown library
     implementation "io.noties.markwon:core:${markwonVersion}"
+    implementation "io.noties.markwon:editor:${markwonVersion}"
+    implementation "io.noties.markwon:ext-latex:${markwonVersion}"
 }
