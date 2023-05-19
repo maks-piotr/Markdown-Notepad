@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.markdown_notepad.R
 import com.google.android.material.textfield.TextInputEditText
+import com.markdown_notepad.focusAndShowKeyboard
 import io.noties.markwon.Markwon
 import io.noties.markwon.editor.MarkwonEditor
 import io.noties.markwon.editor.MarkwonEditorTextWatcher
@@ -25,12 +26,15 @@ class WriteMarkdownFragment : Fragment() {
         editText = fragment.findViewById(R.id.noteEditText)
         // obtain Markwon instance
         val markwon = Markwon.create(fragment.context)
-
         // create editor
         val editor = MarkwonEditor.create(markwon)
-
         // set edit listener
         editText.addTextChangedListener(MarkwonEditorTextWatcher.withProcess(editor))
         return fragment
+    }
+
+    override fun onStart() {
+        super.onStart()
+        editText.focusAndShowKeyboard()
     }
 }
