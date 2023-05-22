@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.commit
+import androidx.lifecycle.ViewModelProvider
 import com.example.markdown_notepad.R
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -49,7 +50,7 @@ class EditActivity : AppCompatActivity() {
             true
         }
         /*! menu*/
-        val editActivityViewModel = EditActivityViewModel()
+        val editActivityViewModel = ViewModelProvider(this)[EditActivityViewModel::class.java]
         fragmentSwitch = findViewById(R.id.toggleEditModeSwitch)
         fragmentSwitch.setOnCheckedChangeListener { _, isChecked ->
             editActivityViewModel.switchDisplayMode(!isChecked)
