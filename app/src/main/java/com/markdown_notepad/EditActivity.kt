@@ -11,6 +11,7 @@ import androidx.fragment.app.commit
 import com.example.markdown_notepad.R
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.markdown_notepad.edit_activity_fragments.EditActivityViewModel
 import com.markdown_notepad.edit_activity_fragments.ReadMarkdownFragment
 import com.markdown_notepad.edit_activity_fragments.WriteMarkdownFragment
 
@@ -48,16 +49,20 @@ class EditActivity : AppCompatActivity() {
             true
         }
         /*! menu*/
+        val editActivityViewModel = EditActivityViewModel()
         fragmentSwitch = findViewById(R.id.toggleEditModeSwitch)
         fragmentSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
+            editActivityViewModel.switchDisplayMode(!isChecked)
+        }
+        editActivityViewModel.isReadMode.observe(this) {
+            if (it) {
                 supportFragmentManager.commit {
-                    replace(R.id.fragmentContainer, WriteMarkdownFragment(), WRITE_FRAGMENT)
+                    replace(R.id.fragmentContainer, ReadMarkdownFragment(), READ_FRAGMENT)
                     setReorderingAllowed(true)
                 }
             } else {
                 supportFragmentManager.commit {
-                    replace(R.id.fragmentContainer, ReadMarkdownFragment(), READ_FRAGMENT)
+                    replace(R.id.fragmentContainer, WriteMarkdownFragment(), WRITE_FRAGMENT)
                     setReorderingAllowed(true)
                 }
             }
