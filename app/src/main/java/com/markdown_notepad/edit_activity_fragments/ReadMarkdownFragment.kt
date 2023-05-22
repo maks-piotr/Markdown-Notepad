@@ -28,7 +28,7 @@ class ReadMarkdownFragment : Fragment() {
         } ?: throw Exception("Invalid Activity")
         noteTextView = fragment.findViewById(R.id.noteTextView)
         viewModel.rawText.observe(viewLifecycleOwner) {
-            val markwon = Markwon.create(requireActivity())
+            val markwon = Markwon.create(fragment.context)
             markwon.setMarkdown(noteTextView, it)
         }
         return fragment

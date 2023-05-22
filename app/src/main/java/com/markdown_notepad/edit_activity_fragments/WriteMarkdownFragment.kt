@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.markdown_notepad.R
@@ -54,4 +55,11 @@ class WriteMarkdownFragment : Fragment() {
         super.onStart()
         editText.focusAndShowKeyboard()
     }
+}
+// custom BindingAdapter that sets cursor to the end of TextInput input
+// it's called on data binding
+@BindingAdapter("cursorPosition")
+fun setCursorPosition(editText: TextInputEditText, value: String?) {
+    value ?: return
+    editText.setSelection(value.length)
 }
