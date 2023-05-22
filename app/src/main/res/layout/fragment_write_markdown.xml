@@ -13,12 +13,11 @@
 
         <!--   Two-way data binding with ViewModel     -->
         <com.google.android.material.textfield.TextInputEditText
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox"
             android:id="@+id/noteEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="5dp"
-            android:layout_marginStart="5dp"
             android:textSize="16sp"
             android:text="@={ mainViewModel.rawText }"
             cursorPosition="@{ mainViewModel.rawText }"

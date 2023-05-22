@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.example.markdown_notepad.R
 import io.noties.markwon.Markwon
+import io.noties.markwon.ext.latex.JLatexMathPlugin
 
 /**
  * A [Fragment] subclass. User interface for reading rendered markdown
@@ -28,7 +29,9 @@ class ReadMarkdownFragment : Fragment() {
         } ?: throw Exception("Invalid Activity")
         noteTextView = fragment.findViewById(R.id.noteTextView)
         viewModel.rawText.observe(viewLifecycleOwner) {
-            val markwon = Markwon.create(fragment.context)
+            val markwon = Markwon.builder(fragment.context)
+                .usePlugin(JLatexMathPlugin.create(noteTextView.textSize))
+                .build()
             markwon.setMarkdown(noteTextView, it)
         }
         return fragment
