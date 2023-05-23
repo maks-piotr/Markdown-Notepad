@@ -9,7 +9,7 @@ interface FileDao {
     @Query("SELECT * FROM files")
     fun getAllFiles(): List<File>
 
-    @Query("SELECT path FROM files WHERE uid = :uid")
+    @Query("SELECT path FROM files WHERE uid = :uid LIMIT 1")
     fun getPathById(uid: Int): String
 
     @Query("SELECT * FROM files WHERE uid = :fileId LIMIT 1")
@@ -39,13 +39,15 @@ interface FileDao {
     @Delete
     fun deleteTags(vararg tag: Tag)
 
-//    @Transaction
-    @Query("SELECT * FROM file_tag WHERE tag_id = :tagId")
-    fun getFilesWithTags(tagId: Int): List<FileTagRelation>
+    @Query("SELECT * FROM files " +
+            "INNER JOIN file_tag ON file_tag.file_id = files.uid " +
+            "WHERE file_tag.tag_id = :tagId")
+    fun getFilesWithTags(tagId: Int): List<File>
 
-//    @Transaction
-    @Query("SELECT * FROM file_tag WHERE file_id = :fileId")
-    fun getTagsWithFiles(fileId: Int): List<FileTagRelation>
+    @Query("SELECT * FROM tags " +
+            "INNER JOIN file_tag ON file_tag.tag_id = tags.uid " +
+            "WHERE file_tag.file_id = :fileId")
+    fun getTagsWithFiles(fileId: Int): List<Tag>
 
     @Insert
     fun setTagsForFile(vararg tagged: FileTagRelation)
