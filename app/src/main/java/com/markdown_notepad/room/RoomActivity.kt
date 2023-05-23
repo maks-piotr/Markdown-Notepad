@@ -9,17 +9,17 @@ import com.markdown_notepad.room.entities.File
 
 class RoomActivity : AppCompatActivity() {
 
+    lateinit var dao: FileDao
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
-        val database = Room.databaseBuilder(
+        dao = Room.databaseBuilder(
             this, FileDatabase::class.java, "file_database"
-        ).allowMainThreadQueries().build()
+        ).allowMainThreadQueries().build().fileDao()
 
-        val fileDao = database.fileDao()
-
-        fileDao.insertFiles(
+        dao.insertFiles(
             File(pathToFile = "path/to/file", title = "qwerty"),
             File(pathToFile = "path/to/file", title = "asdf"),
             File(pathToFile = "path/to/file", title = "zxc"),
@@ -28,7 +28,7 @@ class RoomActivity : AppCompatActivity() {
             File(pathToFile = "path/to/file", title = "yuio")
         )
 
-        val allFiles = fileDao.getAllFiles()
+        val allFiles = dao.getAllFiles()
 
         d("forte", "allFiles size? ${allFiles.size}")
 

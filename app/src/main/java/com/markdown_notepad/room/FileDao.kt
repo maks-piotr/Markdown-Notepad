@@ -1,10 +1,7 @@
 package com.markdown_notepad.room
 
 import androidx.room.*
-import com.markdown_notepad.room.entities.File
-import com.markdown_notepad.room.entities.FilesWithTags
-import com.markdown_notepad.room.entities.Tag
-import com.markdown_notepad.room.entities.TagsWithFiles
+import com.markdown_notepad.room.entities.*
 
 @Dao
 interface FileDao {
@@ -14,6 +11,9 @@ interface FileDao {
 
     @Query("SELECT path FROM files WHERE uid = :uid")
     fun getPathById(uid: Int): String
+
+    @Query("SELECT * FROM files WHERE uid = :fileId LIMIT 1")
+    fun getFileById(fileId: Int): File
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFiles(vararg file: File)
@@ -27,8 +27,8 @@ interface FileDao {
     @Query("SELECT * FROM tags")
     fun getAllTags(): List<Tag>
 
-    @Query("SELECT uid FROM tags WHERE name = :name LIMIT 1")
-    fun getTagIdByName(tagName: String): Int
+    @Query("SELECT * FROM tags WHERE uid = :tagId LIMIT 1")
+    fun getTagById(tagId: Int): Tag
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTags(vararg tag: Tag)
@@ -39,20 +39,18 @@ interface FileDao {
     @Delete
     fun deleteTags(vararg tag: Tag)
 
-    @Transaction
-    @Query("SELECT * FROM File")
-    fun getFilesWithTags(): List<FilesWithTags>
+//    @Transaction
+    @Query("SELECT * FROM file_tag WHERE tag_id = :tagId")
+    fun getFilesWithTags(tagId: Int): List<FileTagRelation>
 
-    @Transaction
-    @Query("SELECT * FROM Tag")
-    fun getTagsWithFiles(): List<TagsWithFiles>
+//    @Transaction
+    @Query("SELECT * FROM file_tag WHERE file_id = :fileId")
+    fun getTagsWithFiles(fileId: Int): List<FileTagRelation>
 
-    @Transaction
-    @Query("SELECT * FROM :file")
-    fun getTagsForFile(file: File): List<FilesWithTags>
+    @Insert
+    fun setTagsForFile(vararg tagged: FileTagRelation)
 
-    @Transaction
-    @Query("SELECT * FROM :tag")
-    fun getFilesForTag(tag: Tag): List<TagsWithFiles>
+    @Delete
+    fun removeTagsFromFile(vararg tagged: FileTagRelation)
 
 }

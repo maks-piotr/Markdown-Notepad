@@ -4,7 +4,7 @@ import androidx.room.*
 
 @Entity(
     tableName = "file_tag",
-    primaryKeys = ["fileId", "tagId"]
+    primaryKeys = ["file_id", "tag_id"]
 )
 data class FileTagRelation(
 
@@ -13,35 +13,5 @@ data class FileTagRelation(
 
     @ColumnInfo(name = "tag_id")
     val tagId: Int
-
-)
-
-data class FilesWithTags(
-
-    @Embedded
-    val file: File,
-
-    @Relation(
-        parentColumn = "file_id",
-        entityColumn = "tag_id",
-        associateBy = Junction(FileTagRelation::class)
-    )
-
-    val tags: List<Tag>
-
-)
-
-data class TagsWithFiles(
-
-    @Embedded
-    val tag: Tag,
-
-    @Relation(
-        parentColumn = "tag_id",
-        entityColumn = "file_id",
-        associateBy = Junction(FileTagRelation::class)
-    )
-
-    val files: List<File>
 
 )
