@@ -8,9 +8,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.commit
+import androidx.lifecycle.ViewModelProvider
 import com.example.markdown_notepad.R
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.markdown_notepad.edit_activity_fragments.EditActivityViewModel
 import com.markdown_notepad.edit_activity_fragments.ReadMarkdownFragment
 import com.markdown_notepad.edit_activity_fragments.WriteMarkdownFragment
 
@@ -48,16 +50,20 @@ class EditActivity : AppCompatActivity() {
             true
         }
         /*! menu*/
+        val editActivityViewModel = ViewModelProvider(this)[EditActivityViewModel::class.java]
         fragmentSwitch = findViewById(R.id.toggleEditModeSwitch)
         fragmentSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
+            editActivityViewModel.switchDisplayMode(!isChecked)
+        }
+        editActivityViewModel.isReadMode.observe(this) {
+            if (it) {
                 supportFragmentManager.commit {
-                    replace(R.id.fragmentContainer, WriteMarkdownFragment(), WRITE_FRAGMENT)
+                    replace(R.id.fragmentContainer, ReadMarkdownFragment(), READ_FRAGMENT)
                     setReorderingAllowed(true)
                 }
             } else {
                 supportFragmentManager.commit {
-                    replace(R.id.fragmentContainer, ReadMarkdownFragment(), READ_FRAGMENT)
+                    replace(R.id.fragmentContainer, WriteMarkdownFragment(), WRITE_FRAGMENT)
                     setReorderingAllowed(true)
                 }
             }
