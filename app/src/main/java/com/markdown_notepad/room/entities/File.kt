@@ -18,6 +18,7 @@ data class File(
     @ColumnInfo(name = "title")
     val title: String?
 
+//    TODO: Add Timestamp
 //    val modifyDate: Timestamp
 
 )

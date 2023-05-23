@@ -15,6 +15,7 @@ class RoomActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
+//        DAO initialization example
         dao = Room.databaseBuilder(
             this, FileDatabase::class.java, "file_database"
         ).allowMainThreadQueries().build().fileDao()
