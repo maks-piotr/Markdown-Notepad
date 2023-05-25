@@ -21,4 +21,5 @@
 
     <string name="view_as_markdown_activity_title">ViewAsMarkdownActivity</string>
     <string name="view_as_markdown_activity_text">VIEW AS MARKDOWN ACTIVITY</string>
+    <string name="default_note_name">default_note_name</string>
 </resources>
