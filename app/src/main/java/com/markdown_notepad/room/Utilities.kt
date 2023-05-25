@@ -7,6 +7,20 @@ import com.markdown_notepad.room.entities.Tag
 import kotlinx.coroutines.flow.Flow
 
 class Utilities(private val dao: FileDao) {
+    val allFiles = dao.getAllFiles()
+    val allTags = dao.getAllTags()
+
+//    @WorkerThread
+    fun showFileTags(file: File): Flow<List<Tag>> {
+        return dao.getTagsWithFiles(file.fileId)
+    }
+
+//    @WorkerThread
+    fun getFilesForTags(tags: List<Tag>): Flow<List<File>> {
+        val tagsIdList = tags.map { it.tagId }
+        return dao.getFilesWithTags(tagsIdList)
+    }
+
 
     @WorkerThread
     suspend fun addFile(title: String, path: String) {
@@ -40,27 +54,6 @@ class Utilities(private val dao: FileDao) {
     @WorkerThread
     suspend fun updateFile(file: File) {
         dao.updateFiles(file)
-    }
-
-    @WorkerThread
-    fun getAllFiles(): Flow<List<File>> {
-        return dao.getAllFiles()
-    }
-
-    @WorkerThread
-    fun getAllTags(): Flow<List<Tag>> {
-        return dao.getAllTags()
-    }
-
-    @WorkerThread
-    fun showFileTags(file: File): Flow<List<Tag>> {
-        return dao.getTagsWithFiles(file.fileId)
-    }
-
-    @WorkerThread
-    fun getFilesForTags(tags: List<Tag>): Flow<List<File>> {
-        val tagsIdList = tags.map { it.tagId }
-        return dao.getFilesWithTags(tagsIdList)
     }
 
 }

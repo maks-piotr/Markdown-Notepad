@@ -8,8 +8,8 @@ import com.markdown_notepad.room.entities.Tag
 import kotlinx.coroutines.launch
 
 class FileViewModel(private val repo: Utilities) : ViewModel() {
-    var files: LiveData<List<File>> = repo.getAllFiles().asLiveData()
-    var tags: LiveData<List<Tag>> = repo.getAllTags().asLiveData()
+    var files: LiveData<List<File>> = repo.allFiles.asLiveData()
+    var tags: LiveData<List<Tag>> = repo.allTags.asLiveData()
     private var foundFile = MutableLiveData<File>()
     private var taggedList = MutableLiveData<List<File>>()
 
