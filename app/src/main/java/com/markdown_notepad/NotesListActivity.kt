@@ -117,7 +117,7 @@ class NotesListActivity : AppCompatActivity() {
                     tagListTag.add(tagVal)
             }
             Log.i("mylogs", "Selected tags: $tagListString")
-            fileViewModel.filterFiles(tagListTag).observe(this) { fileList ->
+            fileViewModel.filterFilesByTags(tagListTag).observe(this) { fileList ->
                 if (fileList != null)
                     squareList = fileList.map { NotesListSquare(it.title,it.fileId) }
                 Log.i("mylogs", fileList.toString())
