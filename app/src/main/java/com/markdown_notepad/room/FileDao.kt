@@ -2,57 +2,62 @@ package com.markdown_notepad.room
 
 import androidx.room.*
 import com.markdown_notepad.room.entities.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FileDao {
 
     @Query("SELECT * FROM files")
-    fun getAllFiles(): List<File>
+    fun getAllFiles(): Flow<List<File>>
 
     @Query("SELECT path FROM files WHERE uid = :uid LIMIT 1")
-    fun getPathById(uid: Int): String
+    suspend fun getPathById(uid: Int): String
 
     @Query("SELECT * FROM files WHERE uid = :fileId LIMIT 1")
-    fun getFileById(fileId: Int): File
+    suspend fun getFileById(fileId: Int): File
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertFiles(vararg file: File)
+    suspend fun insertFiles(vararg file: File)
 
     @Update
-    fun updateFiles(vararg file: File)
+    suspend fun updateFiles(vararg file: File)
 
     @Delete
-    fun deleteFiles(vararg file: File)
+    suspend fun deleteFiles(vararg file: File)
 
     @Query("SELECT * FROM tags")
-    fun getAllTags(): List<Tag>
+    fun getAllTags(): Flow<List<Tag>>
 
     @Query("SELECT * FROM tags WHERE uid = :tagId LIMIT 1")
-    fun getTagById(tagId: Int): Tag
+    suspend fun getTagById(tagId: Int): Tag
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTags(vararg tag: Tag)
+    suspend fun insertTags(vararg tag: Tag)
 
     @Update
-    fun updateTags(vararg tag: Tag)
+    suspend fun updateTags(vararg tag: Tag)
 
     @Delete
-    fun deleteTags(vararg tag: Tag)
+    suspend fun deleteTags(vararg tag: Tag)
 
-    @Query("SELECT * FROM files " +
+    @Query("SELECT files.* FROM files " +
             "INNER JOIN file_tag ON file_tag.file_id = files.uid " +
-            "WHERE file_tag.tag_id = :tagId")
-    fun getFilesWithTags(tagId: Int): List<File>
+            "WHERE file_tag.tag_id IN (:tagIdList)")
+    fun getFilesWithTags(tagIdList: List<Int>): Flow<List<File>>
 
-    @Query("SELECT * FROM tags " +
+    @Query("SELECT tags.* FROM tags " +
             "INNER JOIN file_tag ON file_tag.tag_id = tags.uid " +
             "WHERE file_tag.file_id = :fileId")
-    fun getTagsWithFiles(fileId: Int): List<Tag>
+    fun getTagsWithFiles(fileId: Int): Flow<List<Tag>>
+
+    @Query("SELECT * FROM files " +
+            "WHERE title LIKE '*' || :search || '*'")
+    fun filterByTitle(search: String): Flow<List<File>>
 
     @Insert
-    fun setTagsForFile(vararg tagged: FileTagRelation)
+    suspend fun setTagsForFile(vararg tagged: FileTagRelation)
 
     @Delete
-    fun removeTagsFromFile(vararg tagged: FileTagRelation)
+    suspend fun removeTagsFromFile(vararg tagged: FileTagRelation)
 
 }
