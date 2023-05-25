@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
@@ -13,11 +14,13 @@ import com.example.markdown_notepad.R
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.markdown_notepad.edit_activity_fragments.EditActivityViewModel
+import com.markdown_notepad.edit_activity_fragments.EditNoteDetailsFragment
 import com.markdown_notepad.edit_activity_fragments.ReadMarkdownFragment
 import com.markdown_notepad.edit_activity_fragments.WriteMarkdownFragment
 
 class EditActivity : AppCompatActivity() {
     private lateinit var fragmentSwitch : SwitchMaterial
+    private lateinit var noteTitleTextView: TextView
     /*menu*/
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
@@ -51,6 +54,8 @@ class EditActivity : AppCompatActivity() {
         }
         /*! menu*/
         val editActivityViewModel = ViewModelProvider(this)[EditActivityViewModel::class.java]
+        //Todo: new note/ load note
+        editActivityViewModel.initializeNewNote()
         fragmentSwitch = findViewById(R.id.toggleEditModeSwitch)
         fragmentSwitch.setOnCheckedChangeListener { _, isChecked ->
             editActivityViewModel.switchDisplayMode(!isChecked)
@@ -68,6 +73,13 @@ class EditActivity : AppCompatActivity() {
                 }
             }
         }
+        noteTitleTextView = findViewById(R.id.noteTitleTextView)
+        noteTitleTextView.setOnClickListener {
+            EditNoteDetailsFragment().show(supportFragmentManager, EDIT_DETAILS_FRAGMENT)
+        }
+        editActivityViewModel.noteTitle.observe(this) {
+            noteTitleTextView.text = it
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -80,5 +92,6 @@ class EditActivity : AppCompatActivity() {
     companion object {
         private const val READ_FRAGMENT = "readFragment"
         private const val WRITE_FRAGMENT = "writeFragment"
+        private const val EDIT_DETAILS_FRAGMENT = "editDetailsFragment"
     }
 }
