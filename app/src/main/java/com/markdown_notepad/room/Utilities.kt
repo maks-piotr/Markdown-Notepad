@@ -21,6 +21,10 @@ class Utilities(private val dao: FileDao) {
         return dao.getFilesWithTags(tagsIdList)
     }
 
+    fun filterFiles(search: String): Flow<List<File>> {
+        return dao.filterByTitle(search)
+    }
+
 
     @WorkerThread
     suspend fun addFile(title: String, path: String) {

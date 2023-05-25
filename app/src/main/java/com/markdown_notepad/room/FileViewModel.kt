@@ -50,8 +50,17 @@ class FileViewModel(private val repo: Utilities) : ViewModel() {
         taggedList = repo.getFilesForTags(tags).asLiveData() as MutableLiveData<List<File>>
     }
 
-    fun filterFiles(tags: List<Tag>): LiveData<List<File>> {
+    private fun getFilesByTitle(search: String) = viewModelScope.launch {
+        taggedList = repo.filterFiles(search).asLiveData() as MutableLiveData<List<File>>
+    }
+
+    fun filterFilesByTags(tags: List<Tag>): LiveData<List<File>> {
         getFilesByTags(tags)
+        return taggedList
+    }
+
+    fun filterFilesByTitle(search: String): LiveData<List<File>> {
+        getFilesByTitle(search)
         return taggedList
     }
 }

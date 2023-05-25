@@ -40,15 +40,19 @@ interface FileDao {
     @Delete
     suspend fun deleteTags(vararg tag: Tag)
 
-    @Query("SELECT * FROM files " +
+    @Query("SELECT files.* FROM files " +
             "INNER JOIN file_tag ON file_tag.file_id = files.uid " +
             "WHERE file_tag.tag_id IN (:tagIdList)")
     fun getFilesWithTags(tagIdList: List<Int>): Flow<List<File>>
 
-    @Query("SELECT * FROM tags " +
+    @Query("SELECT tags.* FROM tags " +
             "INNER JOIN file_tag ON file_tag.tag_id = tags.uid " +
             "WHERE file_tag.file_id = :fileId")
     fun getTagsWithFiles(fileId: Int): Flow<List<Tag>>
+
+    @Query("SELECT * FROM files " +
+            "WHERE title LIKE '*' || :search || '*'")
+    fun filterByTitle(search: String): Flow<List<File>>
 
     @Insert
     suspend fun setTagsForFile(vararg tagged: FileTagRelation)
