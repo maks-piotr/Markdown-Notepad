@@ -51,7 +51,7 @@ interface FileDao {
     fun getTagsWithFiles(fileId: Int): Flow<List<Tag>>
 
     @Query("SELECT * FROM files " +
-            "WHERE title LIKE '*' || :search || '*'")
+            "WHERE title LIKE '%' || :search || '%'")
     fun filterByTitle(search: String): Flow<List<File>>
 
     @Insert
