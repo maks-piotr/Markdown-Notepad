@@ -1,6 +1,7 @@
 package com.markdown_notepad.room
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Log.d
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +34,7 @@ class RoomActivity : AppCompatActivity() {
         val allFiles = fileViewModel.files.observe(this) {
             // logic goes here
             // it jest listą plików, można wykorzystać do adaptera
+            Log.i("mylogs", it.toString())
         }
 
 //        Przykład z tutoriala

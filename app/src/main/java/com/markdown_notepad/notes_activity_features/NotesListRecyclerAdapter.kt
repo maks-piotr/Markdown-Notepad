@@ -12,7 +12,7 @@ import com.example.markdown_notepad.R
 import com.markdown_notepad.NotesListActivity
 
 class NotesListRecyclerAdapter(notesListSquareList: List<NotesListSquare>, private val listener_in: NotesListActivity.SquareListener) : RecyclerView.Adapter<NotesListRecyclerAdapter.ViewHolder>() {
-    val squareList : List<NotesListSquare> = notesListSquareList
+    var squareList : List<NotesListSquare> = notesListSquareList
     val listener : NotesListActivity.SquareListener = listener_in
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var textView : TextView = view.findViewById(R.id.note_name)
@@ -34,6 +34,8 @@ class NotesListRecyclerAdapter(notesListSquareList: List<NotesListSquare>, priva
     }
 
     fun passGalleryState() {
+        if (squareList.isNotEmpty())
+            Log.i("mylogs", "pierwszy element: " + squareList[0].toString())
         notifyDataSetChanged()
     }
     fun notifySquareChange(position: Int) {
