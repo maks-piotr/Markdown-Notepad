@@ -31,6 +31,7 @@ class EditActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
+    /* !menu */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +85,10 @@ class EditActivity : AppCompatActivity() {
         }
         noteTitleTextView = findViewById(R.id.noteTitleTextView)
         noteTitleTextView.setOnClickListener {
-            EditNoteDetailsFragment().show(supportFragmentManager, EDIT_DETAILS_FRAGMENT)
+            showEditNoteDetailsFragment()
+        }
+        if (id == null) {
+            showEditNoteDetailsFragment()
         }
         editActivityViewModel.noteTitle.observe(this) {
             noteTitleTextView.text = it
@@ -109,7 +113,7 @@ class EditActivity : AppCompatActivity() {
             popupMenu.show()
         }
     }
-
+    /* menu */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             return true
@@ -117,6 +121,10 @@ class EditActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
     /*!menu*/
+
+    private fun showEditNoteDetailsFragment() {
+        EditNoteDetailsFragment().show(supportFragmentManager, EDIT_DETAILS_FRAGMENT)
+    }
     companion object {
         private const val READ_FRAGMENT = "readFragment"
         private const val WRITE_FRAGMENT = "writeFragment"
