@@ -36,6 +36,7 @@ class EditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
+        supportActionBar?.setTitle("Edit Note")
         /* menu */
         drawerLayout = findViewById(R.id.drawerLayout)
         navView = findViewById(R.id.navView)

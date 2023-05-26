@@ -53,6 +53,7 @@ class NotesListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notes_list)
+        supportActionBar?.setTitle("Notes Browser")
 
 
 //        fileViewModel.addFile("qwerty", "path/to/file")

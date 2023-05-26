@@ -13,8 +13,8 @@
 
     <string name="main_activity_text">MAIN ACTIVITY</string>
 
-    <string name="notes_list_activity_title">Notes List</string>
-    <string name="notes_list_activity_text">NOTES LIST ACTIVITY</string>
+    <string name="notes_list_activity_title">Notes Browser</string>
+    <string name="notes_list_activity_text">NOTES BROWSER ACTIVITY</string>
 
     <string name="settings_activity_title">Settings</string>
     <string name="settings_activity_text">SETTINGS ACTIVITY</string>
