@@ -40,7 +40,7 @@ class EditActivityViewModel(private val repo: Utilities) : ViewModel() {
                Uri.fromFile(currentStorageFile), "r"
            )?.use {
                FileInputStream(it.fileDescriptor).use { stream ->
-                   rawText.value = stream.readBytes().toString()
+                   rawText.value = String(stream.readBytes())
                }
            }
        }
