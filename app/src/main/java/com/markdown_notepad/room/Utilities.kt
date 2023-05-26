@@ -55,9 +55,21 @@ class Utilities(private val dao: FileDao) {
         return dao.getFileById(uid)
     }
 
+    //returns rowid - SQLite internal primary key
+    @WorkerThread
+    suspend fun getFileByRowId(rowId: Long) : File {
+        return dao.getFileByRowId(rowId)
+    }
+
     @WorkerThread
     suspend fun updateFile(file: File) {
         dao.updateFiles(file)
+    }
+
+    @WorkerThread
+    suspend fun addOneFile(title: String, path: String) : Long {
+        val file = File(pathToFile = path, title = title)
+        return dao.insertOneFile(file)
     }
 
 }

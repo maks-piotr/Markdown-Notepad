@@ -24,11 +24,26 @@ tools:context="com.markdown_notepad.EditActivity">
                 android:layout_height="wrap_content"
                 android:text="@string/edit_activity_text"
                 android:layout_weight="1"
-                android:gravity="start" />
+                android:layout_gravity="center_vertical"
+                android:textSize="30sp"/>
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/toggleEditModeSwitch"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="15dp"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/saveNoteButton"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center_vertical"
+                app:backgroundTint="@android:color/transparent"
+                app:iconSize="30sp"
+                app:icon="@drawable/ic_save_icon"
+                app:iconTint="@color/black"
+                />
         </LinearLayout>
         <androidx.fragment.app.FragmentContainerView
             android:name="com.markdown_notepad.edit_activity_fragments.ReadMarkdownFragment"
