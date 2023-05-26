@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -20,6 +21,8 @@ class EditActivity : AppCompatActivity() {
     private lateinit var fragmentSwitch : SwitchMaterial
     private lateinit var noteTitleTextView: TextView
     private lateinit var saveNoteButton: MaterialButton
+    private lateinit var openPopupMenuButton : MaterialButton
+    private lateinit var popupMenu: PopupMenu
     private val editActivityViewModel : EditActivityViewModel by viewModels {
         EditActivityViewModelFactory((application as MarkdownApplication).repo)
     }
@@ -89,6 +92,21 @@ class EditActivity : AppCompatActivity() {
         saveNoteButton = findViewById(R.id.saveNoteButton)
         saveNoteButton.setOnClickListener {
             editActivityViewModel.saveFile(application)
+        }
+        openPopupMenuButton = findViewById(R.id.popupMenuButton)
+        popupMenu = PopupMenu(this, openPopupMenuButton)
+        popupMenu.menuInflater.inflate(R.menu.edit_activity_menu, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.editActivityMenuDeleteNote -> {
+                    editActivityViewModel.deleteNote()
+                    finish()
+                }
+            }
+            false
+        }
+        openPopupMenuButton.setOnClickListener {
+            popupMenu.show()
         }
     }
 

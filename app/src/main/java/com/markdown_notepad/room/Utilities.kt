@@ -72,4 +72,8 @@ class Utilities(private val dao: FileDao) {
         return dao.insertOneFile(file)
     }
 
+    @WorkerThread
+    suspend fun deleteFile(file : File) {
+        dao.deleteFiles(file)
+    }
 }

@@ -25,4 +25,5 @@
     <string name="fragment_edit_details">Edit Details</string>
     <string name="fragment_title">title</string>
     <string name="fragment_accept">Accept</string>
+    <string name="delete_note">Delete</string>
 </resources>

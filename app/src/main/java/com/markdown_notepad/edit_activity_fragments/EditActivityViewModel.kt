@@ -104,6 +104,16 @@ class EditActivityViewModel(private val repo: Utilities) : ViewModel() {
         }
     }
 
+    fun deleteNote() {
+        if (currentStorageFile == null) return
+        CoroutineScope(IO).launch {
+            Log.i("myDelete", "old: " + currentStorageFile.toString())
+            currentStorageFile?.delete()
+            currentDatabaseFile?.let { repo.deleteFile(it) }
+            currentStorageFile = null
+            currentDatabaseFile = null
+        }
+    }
     companion object {
         const val DEFAULT_DIR = "internal"
         private const val FILE_EXTENSION = ".md"

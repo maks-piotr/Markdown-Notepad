@@ -15,7 +15,7 @@ tools:context="com.markdown_notepad.EditActivity">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginStart="20dp"
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/noteTitleTextView"
@@ -44,21 +44,32 @@ tools:context="com.markdown_notepad.EditActivity">
                 app:icon="@drawable/ic_save_icon"
                 app:iconTint="@color/black"
                 />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/popupMenuButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                style="@style/Widget.Material3.Button.IconButton"
+                app:backgroundTint="@android:color/transparent"
+                app:iconSize="30sp"
+                app:icon="@drawable/baseline_more_vert_24"
+                app:iconTint="@color/black"/>
         </LinearLayout>
         <androidx.fragment.app.FragmentContainerView
             android:name="com.markdown_notepad.edit_activity_fragments.ReadMarkdownFragment"
             android:tag="readFragment"
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_read_markdown" />
 
     </LinearLayout>
 
 
 <com.google.android.material.navigation.NavigationView
     android:id="@+id/navView"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     app:headerLayout="@layout/nav_header"
     app:menu="@menu/nav_drawer_menu"
     android:layout_gravity="start"
