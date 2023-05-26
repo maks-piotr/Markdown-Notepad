@@ -4,25 +4,34 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.commit
-import androidx.lifecycle.ViewModelProvider
 import com.example.markdown_notepad.R
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.markdown_notepad.edit_activity_fragments.EditActivityViewModel
-import com.markdown_notepad.edit_activity_fragments.ReadMarkdownFragment
-import com.markdown_notepad.edit_activity_fragments.WriteMarkdownFragment
+import com.markdown_notepad.edit_activity_fragments.*
 
 class EditActivity : AppCompatActivity() {
     private lateinit var fragmentSwitch : SwitchMaterial
+    private lateinit var noteTitleTextView: TextView
+    private lateinit var saveNoteButton: MaterialButton
+    private lateinit var openPopupMenuButton : MaterialButton
+    private lateinit var popupMenu: PopupMenu
+    private val editActivityViewModel : EditActivityViewModel by viewModels {
+        EditActivityViewModelFactory((application as MarkdownApplication).repo)
+    }
     /*menu*/
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
+    /* !menu */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +59,13 @@ class EditActivity : AppCompatActivity() {
             true
         }
         /*! menu*/
-        val editActivityViewModel = ViewModelProvider(this)[EditActivityViewModel::class.java]
+        val id : Int? = intent.extras?.getInt(INTENT_FILE_ID)
+        if (id == null) {
+            editActivityViewModel.initializeNewNote("Note")
+        } else {
+            editActivityViewModel.loadFile(application, id)
+        }
+
         fragmentSwitch = findViewById(R.id.toggleEditModeSwitch)
         fragmentSwitch.setOnCheckedChangeListener { _, isChecked ->
             editActivityViewModel.switchDisplayMode(!isChecked)
@@ -68,8 +83,37 @@ class EditActivity : AppCompatActivity() {
                 }
             }
         }
+        noteTitleTextView = findViewById(R.id.noteTitleTextView)
+        noteTitleTextView.setOnClickListener {
+            showEditNoteDetailsFragment()
+        }
+        if (id == null) {
+            showEditNoteDetailsFragment()
+        }
+        editActivityViewModel.noteTitle.observe(this) {
+            noteTitleTextView.text = it
+        }
+        saveNoteButton = findViewById(R.id.saveNoteButton)
+        saveNoteButton.setOnClickListener {
+            editActivityViewModel.saveFile(application)
+        }
+        openPopupMenuButton = findViewById(R.id.popupMenuButton)
+        popupMenu = PopupMenu(this, openPopupMenuButton)
+        popupMenu.menuInflater.inflate(R.menu.edit_activity_menu, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.editActivityMenuDeleteNote -> {
+                    editActivityViewModel.deleteNote()
+                    finish()
+                }
+            }
+            false
+        }
+        openPopupMenuButton.setOnClickListener {
+            popupMenu.show()
+        }
     }
-
+    /* menu */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             return true
@@ -77,8 +121,14 @@ class EditActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
     /*!menu*/
+
+    private fun showEditNoteDetailsFragment() {
+        EditNoteDetailsFragment().show(supportFragmentManager, EDIT_DETAILS_FRAGMENT)
+    }
     companion object {
         private const val READ_FRAGMENT = "readFragment"
         private const val WRITE_FRAGMENT = "writeFragment"
+        private const val EDIT_DETAILS_FRAGMENT = "editDetailsFragment"
+        private const val INTENT_FILE_ID = "id"
     }
 }

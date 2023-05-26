@@ -22,4 +22,8 @@
     <string name="view_as_markdown_activity_title">ViewAsMarkdownActivity</string>
     <string name="view_as_markdown_activity_text">VIEW AS MARKDOWN ACTIVITY</string>
     <string name="default_note_name">default_note_name</string>
+    <string name="fragment_edit_details">Edit Details</string>
+    <string name="fragment_title">title</string>
+    <string name="fragment_accept">Accept</string>
+    <string name="delete_note">Delete</string>
 </resources>

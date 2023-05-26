@@ -55,25 +55,25 @@ class NotesListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_notes_list)
 
 
-        fileViewModel.addFile("qwerty", "path/to/file")
-        fileViewModel.addTag("tag_test1")
-        var file1 : File? = null
-        fileViewModel.files.observe(this) { files ->
-            Log.i("mylogs", "test1")
-            for (file in files) {
-                Log.i("mylogs", "test2")
-                file1 = file
-            }
-            fileViewModel.tags.observe(this) { tags ->
-                Log.i("mylogs", "tagging " + file1.toString())
-                for (tag in tags) {
-                    if (file1 != null) {
-                        Log.i("mylogs", file1!!.title + "tagged with " + tag.tagId)
-                        fileViewModel.tagFile(file1!!, tag)
-                    }
-                }
-            }
-        }
+//        fileViewModel.addFile("qwerty", "path/to/file")
+//        fileViewModel.addTag("tag_test1")
+//        var file1 : File? = null
+//        fileViewModel.files.observe(this) { files ->
+//            Log.i("mylogs", "test1")
+//            for (file in files) {
+//                Log.i("mylogs", "test2")
+//                file1 = file
+//            }
+//            fileViewModel.tags.observe(this) { tags ->
+//                Log.i("mylogs", "tagging " + file1.toString())
+//                for (tag in tags) {
+//                    if (file1 != null) {
+//                        Log.i("mylogs", file1!!.title + "tagged with " + tag.tagId)
+//                        fileViewModel.tagFile(file1!!, tag)
+//                    }
+//                }
+//            }
+//        }
         
 
         editText = findViewById(R.id.editTextSearch)

@@ -16,8 +16,14 @@ interface FileDao {
     @Query("SELECT * FROM files WHERE uid = :fileId LIMIT 1")
     suspend fun getFileById(fileId: Int): File
 
+    @Query("SELECT * FROM files WHERE rowid = :rowId LIMIT 1")
+    suspend fun getFileByRowId(rowId: Long): File
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFiles(vararg file: File)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOneFile(file: File) : Long
 
     @Update
     suspend fun updateFiles(vararg file: File)
