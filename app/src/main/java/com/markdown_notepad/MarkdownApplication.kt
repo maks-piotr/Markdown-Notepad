@@ -3,11 +3,15 @@ package com.markdown_notepad
 import android.app.Application
 import android.util.Log
 import com.markdown_notepad.room.FileDatabase
+import com.markdown_notepad.room.FileModelFactory
+import com.markdown_notepad.room.FileViewModel
 import com.markdown_notepad.room.Utilities
+import androidx.activity.viewModels
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 class MarkdownApplication : Application() {
