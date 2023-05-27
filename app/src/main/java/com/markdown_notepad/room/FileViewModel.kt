@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 class FileViewModel(private val repo: Utilities) : ViewModel() {
     var files: LiveData<List<File>> = repo.allFiles.asLiveData()
     var tags: LiveData<List<Tag>> = repo.allTags.asLiveData()
-    private var foundFile = MutableLiveData<File>()
+    var foundFile = MutableLiveData<File>()
     private var taggedList = MutableLiveData<List<File>>()
 
     fun addFile(title: String, path: String) = viewModelScope.launch {
@@ -37,7 +37,7 @@ class FileViewModel(private val repo: Utilities) : ViewModel() {
         return repo.showFileTags(file).asLiveData()
     }
 
-    private fun getFileById(uid: Int) = viewModelScope.launch {
+    fun getFileById(uid: Int) = viewModelScope.launch {
         foundFile.value = repo.getFile(uid)
     }
 

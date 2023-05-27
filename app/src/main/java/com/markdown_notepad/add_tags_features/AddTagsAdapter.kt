@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.markdown_notepad.R
+import com.markdown_notepad.room.MyPair
 import com.markdown_notepad.room.entities.Tag
 
-class AddTagAdapter(var tagList: List<Tag>, var modifiedTagList: MutableList<Tag>): RecyclerView.Adapter<AddTagAdapter.ViewHolder>() {
+class AddTagAdapter(var pairList: List<MyPair>, var function: (MyPair)->Unit): RecyclerView.Adapter<AddTagAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var textView : TextView = view.findViewById(R.id.tag_name)
     }
@@ -19,21 +20,18 @@ class AddTagAdapter(var tagList: List<Tag>, var modifiedTagList: MutableList<Tag
     }
 
     override fun getItemCount(): Int {
-        return tagList.size
+        return pairList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textView.text = tagList[position].tagName
-        if (tagList[position] in modifiedTagList)
+        holder.textView.text = pairList[position].first.tagName
+        if (pairList[position].second)
             holder.textView.setBackgroundResource(R.drawable.rounded_corner_checked)
         else
             holder.textView.setBackgroundResource(R.drawable.rounded_corner_unchecked)
 
         holder.itemView.setOnClickListener {
-            if (tagList[position] in modifiedTagList)
-                modifiedTagList.remove(tagList[position])
-            else
-                modifiedTagList.add(tagList[position])
+            function(pairList[position])
             notifyDataSetChanged()
         }
     }
