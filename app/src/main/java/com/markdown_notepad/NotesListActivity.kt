@@ -136,11 +136,11 @@ class NotesListActivity : AppCompatActivity() {
         multiSelectSpinnerWithSearch.setSearchHint(getString(R.string.notes_list_activity_select_tag_text))
         multiSelectSpinnerWithSearch.setEmptyTitle(getString(R.string.notes_list_activity_notFound_tag_text))
         // If you will set the limit, this button will not display automatically.
-        multiSelectSpinnerWithSearch.isShowSelectAllButton = true;
+        multiSelectSpinnerWithSearch.isShowSelectAllButton = true
 
         //var tagArray = arrayListOf<KeyPairBoolData>(KeyPairBoolData("tag1",true),KeyPairBoolData("tag2",true),
         //    KeyPairBoolData("tag2",true),KeyPairBoolData("tag2",true),KeyPairBoolData("tag2",true),KeyPairBoolData("tag2",true),KeyPairBoolData("tag2",true),KeyPairBoolData("tag2",true),KeyPairBoolData("tag2",true))
-        var tagArray = mutableListOf<KeyPairBoolData>()
+        val tagArray = mutableListOf<KeyPairBoolData>()
         fileViewModel.tags.observe(this) {
             for (tag in it) {
                 tagArray.add(KeyPairBoolData(tag.tagName,true))

@@ -1,14 +1,19 @@
 package com.markdown_notepad.edit_activity_fragments
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.markdown_notepad.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.markdown_notepad.AddTagsActivity
+import kotlinx.coroutines.launch
 
 
 class EditNoteDetailsFragment : BottomSheetDialogFragment() {
@@ -16,6 +21,7 @@ class EditNoteDetailsFragment : BottomSheetDialogFragment() {
     private lateinit var noteTitleEditText: TextInputEditText
     private lateinit var acceptButton : MaterialButton
     private lateinit var closeButton: MaterialButton
+    private lateinit var editTagsButton : MaterialButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +43,17 @@ class EditNoteDetailsFragment : BottomSheetDialogFragment() {
         closeButton = fragment.findViewById(R.id.fragmentCloseButton)
         closeButton.setOnClickListener {
             dismiss()
+        }
+        editTagsButton = fragment.findViewById(R.id.fragmentManageTags)
+        editTagsButton.setOnClickListener {
+            viewModel.noteTitle.value = noteTitleEditText.text.toString()
+            lifecycleScope.launch {
+                val id = viewModel.getFileID(requireActivity().application)
+                val intent = Intent(activity, AddTagsActivity::class.java)
+                intent.putExtra("id", id)
+                Log.i("myStartTags", "$id")
+                startActivity(intent)
+            }
         }
         return fragment
     }

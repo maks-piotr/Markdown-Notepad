@@ -31,4 +31,6 @@
     <string name="fragment_accept">Accept</string>
     <string name="delete_note">Delete</string>
     <string name="addFile">Add file</string>
+    <string name="update_tags">Update</string>
+    <string name="edit_tags_details">Edit Tags</string>
 </resources>

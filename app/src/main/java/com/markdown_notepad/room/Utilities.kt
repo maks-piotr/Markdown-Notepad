@@ -69,7 +69,7 @@ class Utilities(private val dao: FileDao) {
     @WorkerThread
     suspend fun addOneFile(title: String, path: String) : Long {
         val file = File(pathToFile = path, title = title)
-        return dao.insertOneFile(file)
+        return dao.insertOneFile(file);
     }
 
     @WorkerThread
