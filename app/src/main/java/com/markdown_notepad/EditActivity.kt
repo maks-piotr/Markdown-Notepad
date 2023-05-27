@@ -119,6 +119,12 @@ class EditActivity : AppCompatActivity() {
         openPopupMenuButton.setOnClickListener {
             popupMenu.show()
         }
+
+        var resultLauncher1 = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
+        val intent = Intent(this, AddTagsActivity::class.java)
+        intent.putExtra("id", id)
+        resultLauncher1.launch(intent)
+
     }
     /* menu */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
