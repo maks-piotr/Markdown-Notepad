@@ -9,6 +9,8 @@ import com.example.markdown_notepad.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.markdown_notepad.EditActivity
+import kotlinx.coroutines.runBlocking
 
 
 class EditNoteDetailsFragment : BottomSheetDialogFragment() {
@@ -16,6 +18,7 @@ class EditNoteDetailsFragment : BottomSheetDialogFragment() {
     private lateinit var noteTitleEditText: TextInputEditText
     private lateinit var acceptButton : MaterialButton
     private lateinit var closeButton: MaterialButton
+    private lateinit var editTagsButton : MaterialButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +40,13 @@ class EditNoteDetailsFragment : BottomSheetDialogFragment() {
         closeButton = fragment.findViewById(R.id.fragmentCloseButton)
         closeButton.setOnClickListener {
             dismiss()
+        }
+        editTagsButton = fragment.findViewById(R.id.fragmentManageTags)
+        editTagsButton.setOnClickListener {
+            runBlocking {
+                val id = viewModel.prepareEditTags(requireActivity().application)
+                (requireActivity() as EditActivity).startEditTagsActivity(id)
+            }
         }
         return fragment
     }

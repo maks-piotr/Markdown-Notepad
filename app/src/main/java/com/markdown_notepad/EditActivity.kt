@@ -3,6 +3,7 @@ package com.markdown_notepad
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -125,6 +126,13 @@ class EditActivity : AppCompatActivity() {
 
     private fun showEditNoteDetailsFragment() {
         EditNoteDetailsFragment().show(supportFragmentManager, EDIT_DETAILS_FRAGMENT)
+    }
+
+    fun startEditTagsActivity(id : Int) {
+        val intent = Intent(this, AddTagsActivity::class.java)
+        intent.putExtra(INTENT_FILE_ID, id)
+        Log.i("myStartTags", "$id")
+        this.startActivity(intent)
     }
     companion object {
         private const val READ_FRAGMENT = "readFragment"

@@ -47,14 +47,38 @@
             android:id="@+id/fragmentNoteTitleInputText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textSize="16sp"
             android:hint="@string/fragment_title"/>
     </com.google.android.material.textfield.TextInputLayout>
-    
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/fragmentAcceptButton"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginHorizontal="20dp"
-        android:text="@string/fragment_accept"/>
+        android:orientation="horizontal">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fragmentManageTags"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:textSize="16sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/edit_tags_details"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fragmentAcceptButton"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            app:icon="@drawable/baseline_check_circle_24"
+            app:iconGravity="textEnd"
+            app:iconPadding="4sp"
+            android:textSize="20sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1.5"
+            android:layout_marginEnd="20dp"
+            android:text="@string/fragment_accept"/>
+    </LinearLayout>
+
 </LinearLayout>

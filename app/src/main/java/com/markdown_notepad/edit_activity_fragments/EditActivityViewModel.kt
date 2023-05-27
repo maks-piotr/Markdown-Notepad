@@ -48,24 +48,7 @@ class EditActivityViewModel(private val repo: Utilities) : ViewModel() {
 
     fun saveFile(applicationContext : Application) {
         if (currentStorageFile == null) {
-            val defaultDirectory = java.io.File(applicationContext.filesDir, DEFAULT_DIR)
-            if (!defaultDirectory.exists()) {
-                defaultDirectory.mkdirs()
-            }
-            var newFile : java.io.File = java.io.File(
-                defaultDirectory,
-                noteTitle.value +
-                        LocalDateTime.now().toString() +
-                        FILE_EXTENSION
-            )
-            while (newFile.exists()) {
-                newFile = java.io.File(
-                    defaultDirectory,
-                    noteTitle.value +
-                            LocalDateTime.now().toString() +
-                            "(${Random.nextInt()})$FILE_EXTENSION")
-            }
-            Log.i("mySave", "new: $newFile")
+            val newFile = saveNewFileToStorage(applicationContext)
             currentStorageFile = newFile
             val rowId = CoroutineScope(IO).async {
                 applicationContext.contentResolver.openFileDescriptor(
@@ -102,6 +85,50 @@ class EditActivityViewModel(private val repo: Utilities) : ViewModel() {
                 }
             }
         }
+    }
+    private fun saveNewFileToStorage(applicationContext: Application) : java.io.File {
+        val defaultDirectory = java.io.File(applicationContext.filesDir, DEFAULT_DIR)
+        if (!defaultDirectory.exists()) {
+            defaultDirectory.mkdirs()
+        }
+        var newFile : java.io.File = java.io.File(
+            defaultDirectory,
+            noteTitle.value +
+                    LocalDateTime.now().toString() +
+                    FILE_EXTENSION
+        )
+        while (newFile.exists()) {
+            newFile = java.io.File(
+                defaultDirectory,
+                noteTitle.value +
+                        LocalDateTime.now().toString() +
+                        "(${Random.nextInt()})$FILE_EXTENSION")
+        }
+        Log.i("mySave", "new: $newFile")
+        return newFile
+    }
+    private fun saveFileForRowIdAsync(applicationContext: Application, newFile : java.io.File) = CoroutineScope(IO).async {
+        applicationContext.contentResolver.openFileDescriptor(
+            Uri.fromFile(newFile), "w"
+        )?.use {
+            FileOutputStream(it.fileDescriptor).use {stream ->
+                stream.write(
+                    rawText.value?.toByteArray()
+                )
+            }
+        }
+        return@async repo.addOneFile(noteTitle.value!!, newFile.canonicalPath)
+    }
+    suspend fun prepareEditTags(applicationContext : Application) : Int {
+        currentDatabaseFile?.let { return currentDatabaseFile!!.fileId }
+        val newFile = saveNewFileToStorage(applicationContext)
+        currentStorageFile = newFile
+        val rowId = saveFileForRowIdAsync(applicationContext, newFile)
+        val file = viewModelScope.async {
+            return@async repo.getFileByRowId(rowId.await())
+        }
+        currentDatabaseFile = file.await()
+        return currentDatabaseFile!!.fileId
     }
 
     fun deleteNote() {
