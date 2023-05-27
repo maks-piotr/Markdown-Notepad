@@ -41,8 +41,12 @@ class NotesListActivity : AppCompatActivity() {
     var fileListTags : List<File> = listOf()
     var fileListSearch : List<File> = listOf()
     var squareList : List<NotesListSquare> = listOf(NotesListSquare("fiel1",1), NotesListSquare("fiel2",2), NotesListSquare("fiel3",3), NotesListSquare("fiel2",2))
-    private var squareListener : SquareListener = SquareListener(this)
-    var gridAdapter : NotesListRecyclerAdapter = NotesListRecyclerAdapter(squareList,squareListener)
+    //private var squareListener : SquareListener = SquareListener(this)
+    var gridAdapter : NotesListRecyclerAdapter = NotesListRecyclerAdapter(squareList) { square ->
+        this.squareClick(
+            square
+        );
+    };
 
     private val fileViewModel: FileViewModel by viewModels {
         FileModelFactory((application as MarkdownApplication).repo)
@@ -53,7 +57,7 @@ class NotesListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notes_list)
-        supportActionBar?.setTitle("Notes Browser")
+        supportActionBar?.setTitle(R.string.notes_list_activity_title);
 
 
 //        fileViewModel.addFile("qwerty", "path/to/file")
@@ -90,8 +94,8 @@ class NotesListActivity : AppCompatActivity() {
                         fileListSearch = fileList
                         //squareListSearch = fileList.map { NotesListSquare(it.title,it.fileId) }
                     Log.i("mylogs", fileList.toString())
-                    Log.i("mylogs", "search files " +  fileListSearch.toString())
-                    Log.i("mylogs", "tags files " +  fileListTags.toString())
+                    Log.i("mylogs", "search files $fileListSearch")
+                    Log.i("mylogs", "tags files $fileListTags")
                     gridAdapter.squareList = findCommon(fileListSearch,fileListTags).toList().map { NotesListSquare(it.title,it.fileId)}
                     gridAdapter.passGalleryState()
                 }
@@ -128,8 +132,8 @@ class NotesListActivity : AppCompatActivity() {
             true
         }
         multiSelectSpinnerWithSearch = findViewById(R.id.multipleItemSelectionSpinner)
-        multiSelectSpinnerWithSearch.setSearchHint("Select Tags")
-        multiSelectSpinnerWithSearch.setEmptyTitle("Not Tags Found!")
+        multiSelectSpinnerWithSearch.setSearchHint(getString(R.string.notes_list_activity_select_tag_text))
+        multiSelectSpinnerWithSearch.setEmptyTitle(getString(R.string.notes_list_activity_notFound_tag_text))
         // If you will set the limit, this button will not display automatically.
         multiSelectSpinnerWithSearch.isShowSelectAllButton = true;
 
@@ -142,7 +146,7 @@ class NotesListActivity : AppCompatActivity() {
                 tagIdMap[tag.tagName] = tag
             }
         }
-        multiSelectSpinnerWithSearch.setClearText("Close & Clear");
+        multiSelectSpinnerWithSearch.setClearText(getString(R.string.notes_list_activity_clear_tag_text));
         multiSelectSpinnerWithSearch.setItems(
             tagArray
         ) { items ->
@@ -208,12 +212,11 @@ class NotesListActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    class SquareListener(NA : NotesListActivity) {
-        private val notesActivity : NotesListActivity = NA
-        fun squareClick(square: NotesListSquare) {
-            notesActivity.squareClick(square)
-        }
-    }
+//    class SquareListener(private val notesActivity : NotesListActivity) {
+//        fun squareClick(square: NotesListSquare) {
+//            notesActivity.squareClick(square)
+//        }
+//    }
 
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             result: ActivityResult ->
@@ -231,7 +234,7 @@ class NotesListActivity : AppCompatActivity() {
     private fun squareClick(square: NotesListSquare) {
         val focusIntent = Intent(this, EditActivity::class.java)
         focusIntent.putExtra("id", square.note_id)
-        Log.i("mylogs", "Enter EditActivity")
+        Log.i("NoteList", "Enter EditActivity")
         startForResult.launch(focusIntent)
     }
     fun <T> findCommon(first: List<T>, second: List<T>): Set<T> {

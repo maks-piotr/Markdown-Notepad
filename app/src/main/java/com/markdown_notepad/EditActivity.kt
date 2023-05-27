@@ -3,6 +3,7 @@ package com.markdown_notepad
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -36,7 +37,8 @@ class EditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
-        supportActionBar?.setTitle("Edit Note")
+        setContentView(R.layout.activity_edit)
+        supportActionBar?.title = "Edit Note"
         /* menu */
         drawerLayout = findViewById(R.id.drawerLayout)
         navView = findViewById(R.id.navView)
@@ -66,6 +68,7 @@ class EditActivity : AppCompatActivity() {
         } else {
             editActivityViewModel.loadFile(application, id)
         }
+        Log.i("start edit", id.toString());
 
         fragmentSwitch = findViewById(R.id.toggleEditModeSwitch)
         fragmentSwitch.setOnCheckedChangeListener { _, isChecked ->

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">markdown_notepad</string>
+    <string name="app_name">Markdown Notepad</string>
 
     <string name="open">Open</string>
     <string name="close">Close</string>
@@ -15,6 +15,9 @@
 
     <string name="notes_list_activity_title">Notes Browser</string>
     <string name="notes_list_activity_text">NOTES BROWSER ACTIVITY</string>
+    <string name="notes_list_activity_clear_tag_text">Close &amp; Clear</string>
+    <string name="notes_list_activity_select_tag_text">Select Tags</string>
+    <string name="notes_list_activity_notFound_tag_text">Not Tags Found!</string>
 
     <string name="settings_activity_title">Settings</string>
     <string name="settings_activity_text">SETTINGS ACTIVITY</string>
@@ -26,4 +29,5 @@
     <string name="fragment_title">title</string>
     <string name="fragment_accept">Accept</string>
     <string name="delete_note">Delete</string>
+    <string name="addFile">Add file</string>
 </resources>
