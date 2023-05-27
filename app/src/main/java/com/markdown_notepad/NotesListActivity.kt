@@ -53,7 +53,7 @@ class NotesListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notes_list)
-        supportActionBar?.setTitle("Notes Browser")
+        supportActionBar?.title = "Notes Browser"
 
 
 //        fileViewModel.addFile("qwerty", "path/to/file")
@@ -131,18 +131,18 @@ class NotesListActivity : AppCompatActivity() {
         multiSelectSpinnerWithSearch.setSearchHint("Select Tags")
         multiSelectSpinnerWithSearch.setEmptyTitle("Not Tags Found!")
         // If you will set the limit, this button will not display automatically.
-        multiSelectSpinnerWithSearch.isShowSelectAllButton = true;
+        multiSelectSpinnerWithSearch.isShowSelectAllButton = true
 
         //var tagArray = arrayListOf<KeyPairBoolData>(KeyPairBoolData("tag1",true),KeyPairBoolData("tag2",true),
         //    KeyPairBoolData("tag2",true),KeyPairBoolData("tag2",true),KeyPairBoolData("tag2",true),KeyPairBoolData("tag2",true),KeyPairBoolData("tag2",true),KeyPairBoolData("tag2",true),KeyPairBoolData("tag2",true))
-        var tagArray = mutableListOf<KeyPairBoolData>()
+        val tagArray = mutableListOf<KeyPairBoolData>()
         fileViewModel.tags.observe(this) {
             for (tag in it) {
                 tagArray.add(KeyPairBoolData(tag.tagName,true))
                 tagIdMap[tag.tagName] = tag
             }
         }
-        multiSelectSpinnerWithSearch.setClearText("Close & Clear");
+        multiSelectSpinnerWithSearch.setClearText("Close & Clear")
         multiSelectSpinnerWithSearch.setItems(
             tagArray
         ) { items ->
