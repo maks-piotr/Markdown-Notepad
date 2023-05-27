@@ -15,6 +15,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidbuts.multispinnerfilter.KeyPairBoolData
 import com.androidbuts.multispinnerfilter.MultiSpinnerSearch
@@ -106,8 +107,8 @@ class NotesListActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
         })
 
-        recyclerView = findViewById<RecyclerView>(R.id.recyclerViewItems)
-        recyclerView.layoutManager = GridLayoutManager(this,3)
+        recyclerView = findViewById(R.id.recyclerViewItems)
+        recyclerView.layoutManager = LinearLayoutManager(this.applicationContext)//GridLayoutManager(this,3)
         recyclerView.adapter = gridAdapter
 
         drawerLayout = findViewById(R.id.drawerLayout)
@@ -165,8 +166,8 @@ class NotesListActivity : AppCompatActivity() {
                         fileListTags = fileList
                     //squareListSearch = fileList.map { NotesListSquare(it.title,it.fileId) }
                     Log.i("mylogs", fileList.toString())
-                    Log.i("mylogs", "search files " + fileListSearch.toString())
-                    Log.i("mylogs", "tags files " + fileListTags.toString())
+                    Log.i("mylogs", "search files $fileListSearch")
+                    Log.i("mylogs", "tags files $fileListTags")
                     gridAdapter.squareList = findCommon(fileListSearch, fileListTags).toList()
                         .map { NotesListSquare(it.title, it.fileId) }
                     gridAdapter.passGalleryState()
@@ -178,8 +179,8 @@ class NotesListActivity : AppCompatActivity() {
                         fileListTags = fileList
                     //squareListSearch = fileList.map { NotesListSquare(it.title,it.fileId) }
                     Log.i("mylogs", fileList.toString())
-                    Log.i("mylogs", "search files " + fileListSearch.toString())
-                    Log.i("mylogs", "tags files " + fileListTags.toString())
+                    Log.i("mylogs", "search files $fileListSearch")
+                    Log.i("mylogs", "tags files $fileListTags")
                     gridAdapter.squareList = findCommon(fileListSearch, fileListTags).toList()
                         .map { NotesListSquare(it.title, it.fileId) }
                     gridAdapter.passGalleryState()

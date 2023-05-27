@@ -20,7 +20,7 @@ tools:context="com.markdown_notepad.NotesListActivity">
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:hint="Search"
+            android:hint="@string/notes_list_search_hint"
             android:imeOptions="actionSearch"
             android:inputType="text" />
 
@@ -46,7 +46,7 @@ tools:context="com.markdown_notepad.NotesListActivity">
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                app:hintText="Select tags" />
+                app:hintText="@string/notes_list_activity_select_tag_text" />
 
         </LinearLayout>
 
@@ -56,7 +56,8 @@ tools:context="com.markdown_notepad.NotesListActivity">
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/linearLayoutFilters"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            tools:listitem="@layout/notes_list_square" />
 
     </RelativeLayout>
 
