@@ -48,20 +48,9 @@ class EditActivityViewModel(private val repo: Utilities) : ViewModel() {
 
     fun saveFile(applicationContext : Application) {
         if (currentStorageFile == null) {
-            val newFile = saveNewFileToStorage(applicationContext)
+            val newFile = createNewFileInStorage(applicationContext)
             currentStorageFile = newFile
-            val rowId = CoroutineScope(IO).async {
-                applicationContext.contentResolver.openFileDescriptor(
-                    Uri.fromFile(newFile), "w"
-                )?.use {
-                    FileOutputStream(it.fileDescriptor).use {stream ->
-                        stream.write(
-                            rawText.value?.toByteArray()
-                        )
-                    }
-                }
-                return@async repo.addOneFile(noteTitle.value!!, newFile.canonicalPath)
-            }
+            val rowId = saveFileForRowIdAsync(applicationContext, newFile)
             viewModelScope.launch {
                 currentDatabaseFile = repo.getFileByRowId(rowId.await())
             }
@@ -76,7 +65,7 @@ class EditActivityViewModel(private val repo: Utilities) : ViewModel() {
                         )
                     }
                 }
-                Log.i("mySave", "old: " + currentStorageFile.toString())
+                Log.i("markdownFileIO", "old: " + currentStorageFile.toString())
                 if (!currentDatabaseFile!!.title.equals(noteTitle.value)) {
                     currentDatabaseFile = com.markdown_notepad.room.entities.File(
                         currentDatabaseFile!!.fileId, currentDatabaseFile!!.pathToFile, noteTitle.value
@@ -86,7 +75,7 @@ class EditActivityViewModel(private val repo: Utilities) : ViewModel() {
             }
         }
     }
-    private fun saveNewFileToStorage(applicationContext: Application) : java.io.File {
+    private fun createNewFileInStorage(applicationContext: Application) : java.io.File {
         val defaultDirectory = java.io.File(applicationContext.filesDir, DEFAULT_DIR)
         if (!defaultDirectory.exists()) {
             defaultDirectory.mkdirs()
@@ -104,7 +93,6 @@ class EditActivityViewModel(private val repo: Utilities) : ViewModel() {
                         LocalDateTime.now().toString() +
                         "(${Random.nextInt()})$FILE_EXTENSION")
         }
-        Log.i("mySave", "new: $newFile")
         return newFile
     }
     private fun saveFileForRowIdAsync(applicationContext: Application, newFile : java.io.File) = CoroutineScope(IO).async {
@@ -117,24 +105,27 @@ class EditActivityViewModel(private val repo: Utilities) : ViewModel() {
                 )
             }
         }
+        Log.i("markdownFileIO", "new: $newFile")
         return@async repo.addOneFile(noteTitle.value!!, newFile.canonicalPath)
     }
-    suspend fun prepareEditTags(applicationContext : Application) : Int {
-        currentDatabaseFile?.let { return currentDatabaseFile!!.fileId }
-        val newFile = saveNewFileToStorage(applicationContext)
+    suspend fun prepareFileIdAsync(applicationContext : Application) : Int {
+        if (currentDatabaseFile != null) {
+            return currentDatabaseFile!!.fileId
+        }
+        val newFile = createNewFileInStorage(applicationContext)
         currentStorageFile = newFile
         val rowId = saveFileForRowIdAsync(applicationContext, newFile)
         val file = viewModelScope.async {
             return@async repo.getFileByRowId(rowId.await())
         }
-        currentDatabaseFile = file.await()
-        return currentDatabaseFile!!.fileId
+        val newDBFile = file.await()
+        currentDatabaseFile = newDBFile
+        return newDBFile.fileId
     }
 
     fun deleteNote() {
         if (currentStorageFile == null) return
         CoroutineScope(IO).launch {
-            Log.i("myDelete", "old: " + currentStorageFile.toString())
             currentStorageFile?.delete()
             currentDatabaseFile?.let { repo.deleteFile(it) }
             currentStorageFile = null
