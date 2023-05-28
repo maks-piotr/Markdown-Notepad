@@ -51,7 +51,7 @@ class Utilities(private val dao: FileDao) {
     }
 
     @WorkerThread
-    suspend fun getFile(uid: Int): Flow<File> {
+    suspend fun getFile(uid: Int): File {
         return dao.getFileById(uid)
     }
 
