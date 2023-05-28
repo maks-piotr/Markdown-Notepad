@@ -41,7 +41,7 @@ class NotesListActivity : AppCompatActivity() {
     var tagIdMap = mutableMapOf<String,Tag>()
     var fileListTags : List<File> = listOf()
     var fileListSearch : List<File> = listOf()
-    var squareList : List<NotesListSquare> = listOf()
+    var squareList : List<NotesListSquare> = listOf(NotesListSquare("fiel1",1), NotesListSquare("fiel2",2), NotesListSquare("fiel3",3), NotesListSquare("fiel2",2))
     var gridAdapter : NotesListRecyclerAdapter = NotesListRecyclerAdapter(squareList) { square ->
         this.squareClick(
             square
