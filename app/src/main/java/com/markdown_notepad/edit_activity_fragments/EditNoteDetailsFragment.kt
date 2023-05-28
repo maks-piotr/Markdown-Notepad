@@ -13,7 +13,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.markdown_notepad.AddTagsActivity
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class EditNoteDetailsFragment : BottomSheetDialogFragment() {
@@ -48,11 +50,15 @@ class EditNoteDetailsFragment : BottomSheetDialogFragment() {
         editTagsButton.setOnClickListener {
             viewModel.noteTitle.value = noteTitleEditText.text.toString()
             lifecycleScope.launch {
-                val id = viewModel.getFileID(requireActivity().application)
-                val intent = Intent(activity, AddTagsActivity::class.java)
-                intent.putExtra("id", id)
-                Log.i("myStartTags", "$id")
-                startActivity(intent)
+                withContext(IO) {
+                    viewModel.saveFile(requireActivity().application)
+                }
+                viewModel.currentFileDBId.observe(viewLifecycleOwner) {
+                    val intent = Intent(activity, AddTagsActivity::class.java)
+                    intent.putExtra("id", it)
+                    Log.i("myStartTags", "$it")
+                    startActivity(intent)
+                }
             }
         }
         return fragment

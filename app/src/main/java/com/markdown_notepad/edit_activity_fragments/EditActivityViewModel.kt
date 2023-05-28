@@ -17,8 +17,10 @@ class EditActivityViewModel(private val repo: Utilities) : ViewModel() {
     val isReadMode : LiveData<Boolean> = _isReadMode
     val rawText : MutableLiveData<String> = MutableLiveData("")
     val noteTitle : MutableLiveData<String> = MutableLiveData("")
-    private var currentStorageFile : java.io.File? = null
+    private var currentStorageFile : File? = null
     private var currentDatabaseFile : com.markdown_notepad.room.entities.File? = null
+    private var _currentFileDBId : MutableLiveData<Int> = MutableLiveData()
+    val currentFileDBId : LiveData<Int> = _currentFileDBId
 
     fun switchDisplayMode(isReadM : Boolean) {
         _isReadMode.value = isReadM
@@ -28,39 +30,37 @@ class EditActivityViewModel(private val repo: Utilities) : ViewModel() {
         noteTitle.value = defaultTitle
     }
 
-    fun loadFile(applicationContext : Application, id : Int) {
+    fun loadFile(id : Int) {
        viewModelScope.launch {
-           val databaseFile = repo.getFile(id) as com.markdown_notepad.room.entities.File?
-               ?: throw Exception("File (id = $id) not found in database")
-           currentDatabaseFile = databaseFile
-
-            Log.i("URI EditViewModel",Uri.parse(databaseFile.pathToFile).toString());
-            currentStorageFile =  Uri.parse(databaseFile.pathToFile).toFile();
+            val databaseFile = repo.getFile(id) as com.markdown_notepad.room.entities.File? ?: throw Exception("File (id = $id) not found in database")
+            currentDatabaseFile = databaseFile
+            Log.i("editAVM", "load" + Uri.parse(databaseFile.pathToFile).toString())
+            currentStorageFile =  Uri.parse(databaseFile.pathToFile).toFile()
             noteTitle.value = databaseFile.title ?: throw Exception("could not fetch note's title (File id = $id)")
             rawText.value = Uri.parse(databaseFile.pathToFile).toFile().readText()
+            _currentFileDBId.value = currentDatabaseFile!!.fileId
        }
     }
-    suspend fun getFileID(applicationContext : Application) : Int{
-        return if(currentDatabaseFile == null) {
-            saveFile(applicationContext);
-            currentDatabaseFile!!.fileId;
-        }else{
-            currentDatabaseFile!!.fileId;
-        }
-    }
-    suspend fun saveFile(applicationContext : Application) {
+    fun saveFile(applicationContext : Application) {
         if (currentStorageFile == null) {
-            currentStorageFile = createNewFileInStorage(applicationContext);
-            val id = repo.addOneFile(noteTitle.value!!, Uri.fromFile(currentStorageFile).toString());
-            currentDatabaseFile = repo.getFileByRowId(id);
+            val id = CoroutineScope(IO).async {
+                currentStorageFile = createNewFileForStorage(applicationContext)
+                rawText.value?.toString()?.let {
+                    currentStorageFile!!.writeText(it)
+                }
+                Log.i("editAVM", "save new: " + Uri.fromFile(currentStorageFile).toString())
+                repo.addOneFile(noteTitle.value!!, Uri.fromFile(currentStorageFile).toString())
+            }
+            viewModelScope.launch {
+                currentDatabaseFile = repo.getFileByRowId(id.await())
+                _currentFileDBId.value = currentDatabaseFile!!.fileId
+            }
         } else {
             CoroutineScope(IO).launch {
-                Log.i("view model save",Uri.fromFile(currentStorageFile).toString());
-                rawText.value?.toByteArray()?.let {
-                    currentStorageFile?.writeBytes(it)
-                };
-
-                Log.i("mySave", "old: " + Uri.fromFile(currentStorageFile).toString())
+                rawText.value?.toString()?.let {
+                    currentStorageFile!!.writeText(it)
+                }
+                Log.i("editAVM", "save old: " + Uri.fromFile(currentStorageFile).toString())
                 currentDatabaseFile = com.markdown_notepad.room.entities.File(
                     currentDatabaseFile!!.fileId, currentDatabaseFile!!.pathToFile, noteTitle.value
                 )
@@ -69,7 +69,7 @@ class EditActivityViewModel(private val repo: Utilities) : ViewModel() {
         }
     }
 
-    private fun createNewFileInStorage(applicationContext: Application) : java.io.File {
+    private fun createNewFileForStorage(applicationContext: Application) : File {
         return File( applicationContext.getExternalFilesDir(null), UUID.randomUUID().toString())
     }
     fun deleteNote() {
@@ -80,10 +80,6 @@ class EditActivityViewModel(private val repo: Utilities) : ViewModel() {
             currentStorageFile = null
             currentDatabaseFile = null
         }
-    }
-    companion object {
-        const val DEFAULT_DIR = "internal"
-        private const val FILE_EXTENSION = ".md"
     }
 }
 

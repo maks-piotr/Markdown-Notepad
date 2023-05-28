@@ -17,8 +17,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.markdown_notepad.edit_activity_fragments.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class EditActivity : AppCompatActivity() {
     private lateinit var fragmentSwitch : SwitchMaterial
@@ -67,9 +65,9 @@ class EditActivity : AppCompatActivity() {
         if (id == null) {
             editActivityViewModel.initializeNewNote("Note")
         } else {
-            editActivityViewModel.loadFile(application, id)
+            editActivityViewModel.loadFile(id)
         }
-        Log.i("start edit", id.toString());
+        Log.i("start edit", id.toString())
 
         fragmentSwitch = findViewById(R.id.toggleEditModeSwitch)
         fragmentSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -94,9 +92,6 @@ class EditActivity : AppCompatActivity() {
         }
         if (id == null) {
             showEditNoteDetailsFragment()
-            GlobalScope.launch {
-                editActivityViewModel.saveFile(application)
-            }
         }
         editActivityViewModel.noteTitle.observe(this) {
             noteTitleTextView.text = it
@@ -104,9 +99,7 @@ class EditActivity : AppCompatActivity() {
 
         saveNoteButton = findViewById(R.id.saveNoteButton)
         saveNoteButton.setOnClickListener {
-            GlobalScope.launch {
-                editActivityViewModel.saveFile(application)
-            }
+            editActivityViewModel.saveFile(application)
         }
         openPopupMenuButton = findViewById(R.id.popupMenuButton)
         popupMenu = PopupMenu(this, openPopupMenuButton)
