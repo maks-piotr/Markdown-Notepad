@@ -41,8 +41,7 @@ class NotesListActivity : AppCompatActivity() {
     var tagIdMap = mutableMapOf<String,Tag>()
     var fileListTags : List<File> = listOf()
     var fileListSearch : List<File> = listOf()
-    var squareList : List<NotesListSquare> = listOf(NotesListSquare("fiel1",1), NotesListSquare("fiel2",2), NotesListSquare("fiel3",3), NotesListSquare("fiel2",2))
-    //private var squareListener : SquareListener = SquareListener(this)
+    var squareList : List<NotesListSquare> = listOf()
     var gridAdapter : NotesListRecyclerAdapter = NotesListRecyclerAdapter(squareList) { square ->
         this.squareClick(
             square
@@ -58,29 +57,7 @@ class NotesListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notes_list)
-        supportActionBar?.setTitle(R.string.notes_list_activity_title);
-
-
-//        fileViewModel.addFile("qwerty", "path/to/file")
-//        fileViewModel.addTag("tag_test1")
-//        var file1 : File? = null
-//        fileViewModel.files.observe(this) { files ->
-//            Log.i("mylogs", "test1")
-//            for (file in files) {
-//                Log.i("mylogs", "test2")
-//                file1 = file
-//            }
-//            fileViewModel.tags.observe(this) { tags ->
-//                Log.i("mylogs", "tagging " + file1.toString())
-//                for (tag in tags) {
-//                    if (file1 != null) {
-//                        Log.i("mylogs", file1!!.title + "tagged with " + tag.tagId)
-//                        fileViewModel.tagFile(file1!!, tag)
-//                    }
-//                }
-//            }
-//        }
-        
+        supportActionBar?.setTitle(R.string.notes_list_activity_title)
 
         editText = findViewById(R.id.editTextSearch)
 
