@@ -19,7 +19,7 @@ class RoomActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit)
+        setContentView(R.layout.empty)
 
         fileViewModel.addFile("qwerty", "path/to/file")
         fileViewModel.addFile("asdf", "path/to/file")
@@ -31,10 +31,14 @@ class RoomActivity : AppCompatActivity() {
 //        Getting the file
 //        val file = fileViewModel.getFile(5)
 
-        val allFiles = fileViewModel.files.observe(this) {
+        fileViewModel.files.observe(this) {
             // logic goes here
             // it jest listą plików, można wykorzystać do adaptera
             Log.i("mylogs", it.toString())
+        }
+
+        fileViewModel.getFile(3).observe(this) {
+            Log.i("forte", it.toString())
         }
 
 //        Przykład z tutoriala

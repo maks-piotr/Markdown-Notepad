@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 class FileViewModel(private val repo: Utilities) : ViewModel() {
     var files: LiveData<List<File>> = repo.allFiles.asLiveData()
     var tags: LiveData<List<Tag>> = repo.allTags.asLiveData()
-    var foundFile = MutableLiveData<File>()
-    private var taggedList = MutableLiveData<List<File>>()
+//    private var foundFile = MutableLiveData<File>()
+//    private var taggedList = MutableLiveData<List<File>>()
 
     fun addFile(title: String, path: String) = viewModelScope.launch {
         repo.addFile(title, path)
@@ -37,31 +37,32 @@ class FileViewModel(private val repo: Utilities) : ViewModel() {
         return repo.showFileTags(file).asLiveData()
     }
 
-    fun getFileById(uid: Int) = viewModelScope.launch {
-        foundFile.value = repo.getFile(uid)
-    }
+//    private fun getFileById(uid: Int) = viewModelScope.launch {
+//        foundFile.value = repo.getFile(uid)
+//    }
 
-    fun getFile(uid: Int): File? {
-        getFileById(uid)
-        return foundFile.value
-    }
-
-    private fun getFilesByTags(tags: List<Tag>) = viewModelScope.launch {
-        taggedList = repo.getFilesForTags(tags).asLiveData() as MutableLiveData<List<File>>
-    }
-
-    private fun getFilesByTitle(search: String) = viewModelScope.launch {
-        taggedList = repo.filterFiles(search).asLiveData() as MutableLiveData<List<File>>
+    fun getFile(uid: Int): LiveData<File> {
+        var res = MutableLiveData<File>()
+        viewModelScope.launch {
+            res = repo.getFile(uid).asLiveData() as MutableLiveData<File>
+        }
+        return res
     }
 
     fun filterFilesByTags(tags: List<Tag>): LiveData<List<File>> {
-        getFilesByTags(tags)
-        return taggedList
+        var res = MutableLiveData<List<File>>()
+        viewModelScope.launch {
+            res = repo.getFilesForTags(tags).asLiveData() as MutableLiveData<List<File>>
+        }
+        return res
     }
 
     fun filterFilesByTitle(search: String): LiveData<List<File>> {
-        getFilesByTitle(search)
-        return taggedList
+        var res = MutableLiveData<List<File>>()
+        viewModelScope.launch {
+            res = repo.filterFiles(search).asLiveData() as MutableLiveData<List<File>>
+        }
+        return res
     }
 }
 

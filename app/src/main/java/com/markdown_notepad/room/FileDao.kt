@@ -14,7 +14,7 @@ interface FileDao {
     suspend fun getPathById(uid: Int): String
 
     @Query("SELECT * FROM files WHERE uid = :fileId LIMIT 1")
-    suspend fun getFileById(fileId: Int): File
+    fun getFileById(fileId: Int): Flow<File>
 
     @Query("SELECT * FROM files WHERE rowid = :rowId LIMIT 1")
     suspend fun getFileByRowId(rowId: Long): File
