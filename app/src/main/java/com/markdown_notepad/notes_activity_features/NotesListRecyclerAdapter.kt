@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.markdown_notepad.R
 
 class NotesListRecyclerAdapter(var squareList: List<NotesListSquare>, private val listener: (NotesListSquare)->Unit ) : RecyclerView.Adapter<NotesListRecyclerAdapter.ViewHolder>() {
-//    var squareList : List<NotesListSquare> = notesListSquareList
-//    val listener : NotesListActivity.SquareListener = listener_in
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var textView : TextView = view.findViewById(R.id.note_name)
     }
@@ -31,8 +29,6 @@ class NotesListRecyclerAdapter(var squareList: List<NotesListSquare>, private va
     }
 
     fun passGalleryState() {
-        if (squareList.isNotEmpty())
-            Log.i("mylogs", "pierwszy element: " + squareList[0].toString())
         notifyDataSetChanged()
     }
     override fun getItemCount(): Int {

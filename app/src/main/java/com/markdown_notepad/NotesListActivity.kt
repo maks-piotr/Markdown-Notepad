@@ -66,12 +66,9 @@ class NotesListActivity : AppCompatActivity() {
 
                 Log.i("mylogs", "search concluded")
 
-
                 fileViewModel.filterFilesByTitle(editText.text.toString()).observe(owner) { fileList ->
                     if (fileList != null)
                         fileListSearch = fileList
-                        //squareListSearch = fileList.map { NotesListSquare(it.title,it.fileId) }
-                    Log.i("mylogs", fileList.toString())
                     Log.i("mylogs", "search files $fileListSearch")
                     Log.i("mylogs", "tags files $fileListTags")
                     gridAdapter.squareList = findCommon(fileListSearch,fileListTags).toList().map { NotesListSquare(it.title,it.fileId)}
@@ -141,8 +138,6 @@ class NotesListActivity : AppCompatActivity() {
                 fileViewModel.filterFilesByTags(tagListTag).observe(this) { fileList ->
                     if (fileList != null)
                         fileListTags = fileList
-                    //squareListSearch = fileList.map { NotesListSquare(it.title,it.fileId) }
-                    Log.i("mylogs", fileList.toString())
                     Log.i("mylogs", "search files $fileListSearch")
                     Log.i("mylogs", "tags files $fileListTags")
                     gridAdapter.squareList = findCommon(fileListSearch, fileListTags).toList()
@@ -154,8 +149,6 @@ class NotesListActivity : AppCompatActivity() {
                 fileViewModel.files.observe(this) { fileList ->
                     if (fileList != null)
                         fileListTags = fileList
-                    //squareListSearch = fileList.map { NotesListSquare(it.title,it.fileId) }
-                    Log.i("mylogs", fileList.toString())
                     Log.i("mylogs", "search files $fileListSearch")
                     Log.i("mylogs", "tags files $fileListTags")
                     gridAdapter.squareList = findCommon(fileListSearch, fileListTags).toList()
@@ -172,14 +165,9 @@ class NotesListActivity : AppCompatActivity() {
                 fileListTags = fileList
                 fileListSearch = fileList
             }
-            Log.i("mylogs", fileList.toString())
-            Log.i("mylogs", squareList.toString())
             gridAdapter.squareList = squareList
             gridAdapter.passGalleryState()
         }
-        Log.i("mylogs2","test")
-
-
 
     }
 
@@ -190,11 +178,6 @@ class NotesListActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-//    class SquareListener(private val notesActivity : NotesListActivity) {
-//        fun squareClick(square: NotesListSquare) {
-//            notesActivity.squareClick(square)
-//        }
-//    }
 
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             result: ActivityResult ->
@@ -205,8 +188,6 @@ class NotesListActivity : AppCompatActivity() {
             }
         }
 
-
-        Log.i("mylogs", "test3 " + result.resultCode)
     }
 
     private fun squareClick(square: NotesListSquare) {
